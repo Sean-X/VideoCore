@@ -1,13 +1,14 @@
 
+
 #VideoCore
 _&copy; 2013-2014 James G Hurley_
 
-VideoCore is a project inteded to be an audio and video manipulation and streaming graph.  It currently works with iOS and periodic (live) sources.  It is a work in progress and will eventually expand to other platforms such as OS X and Android.  **Contributors welcome!**
+VideoCore is a project inteded to be an audio and video manipulation and streaming graph.  It currently works with iOS and periodic (live) sources.  It is a work in progress and will eventually expand to other platforms such as OS X and Android.  **Contributors welcome!** [![Stories in Ready](https://badge.waffle.io/jgh-/VideoCore.png?label=ready&title=Ready)](https://waffle.io/jgh-/VideoCore)
 
 ###Table of Contents
 * [Setup](#setup)
-* [Architecture Overview](#architecture-overview)
 * [Projects Using VideoCore](#projects-using-videocore)
+* [Architecture Overview](#architecture-overview)
 * [Version History](#version-history)
 
 ##Setup
@@ -37,6 +38,14 @@ xcodebuild -workspace SampleBroadcaster.xcworkspace -scheme SampleBroadcaster bu
 ```
 More on CocoaPods: http://cocoapods.org/
 
+##Projects Using VideoCore
+
+Looking for someone to help you with your video streaming project? Feel free to contact jamesghurley@gmail.com
+
+* Cine.io (http://www.cine.io)
+
+_If you would like to be included in this list, either make a pull request or contact jamesghurley@gmail.com_
+
 
 ##Architecture Overview
 
@@ -46,59 +55,65 @@ e.g. Source (Camera) -> Transform (Composite) -> Transform (H.264 Encode) -> Tra
 
 ```
 videocore/
-    sources/
-        videocore::ISource
-        videocore::IAudioSource : videocore::ISource
-        videocore::IVideoSource : videocore::ISource
-        videocore::Watermark : videocore:IVideoSource
-            iOS/
-                videocore::iOS::CameraSource : videocore::IVideoSource
-            Apple/
-                videocore::Apple::MicrophoneSource : videocore::IAudioSource
-            OSX/
-                videocore::OSX::DisplaySource : videocore::IVideoSource
-                videocore::OSX::SystemAudioSource : videocore::IAudioSource
-    outputs/
-        videocore::IOutput
-        videocore::ITransform : videocore::IOutput
-            iOS/
-                videocore::iOS::H264Transform : videocore::ITransform
-                videocore::iOS::AACTransform  : videocore::ITransform
-            OSX/
-                videocore::OSX::H264Transform : videocore::ITransform
-                videocore::OSX::AACTransform  : videocore::ITransform
-            RTMP/
-                videocore::rtmp::H264Packetizer : videocore::ITransform
-                videocore::rtmp::AACPacketizer : videocore::ITransform
+sources/
+videocore::ISource
+videocore::IAudioSource : videocore::ISource
+videocore::IVideoSource : videocore::ISource
+videocore::Watermark : videocore:IVideoSource
+iOS/
+videocore::iOS::CameraSource : videocore::IVideoSource
+Apple/
+videocore::Apple::MicrophoneSource : videocore::IAudioSource
+OSX/
+videocore::OSX::DisplaySource : videocore::IVideoSource
+videocore::OSX::SystemAudioSource : videocore::IAudioSource
+outputs/
+videocore::IOutput
+videocore::ITransform : videocore::IOutput
+iOS/
+videocore::iOS::H264Transform : videocore::ITransform
+videocore::iOS::AACTransform  : videocore::ITransform
+OSX/
+videocore::OSX::H264Transform : videocore::ITransform
+videocore::OSX::AACTransform  : videocore::ITransform
+RTMP/
+videocore::rtmp::H264Packetizer : videocore::ITransform
+videocore::rtmp::AACPacketizer : videocore::ITransform
 
-    mixers/
-        videocore::IMixer
-        videocore::IAudioMixer : videocore::IMixer
-        videocore::IVideoMixer : videocore::IMixer
-        videocore::AudioMixer : videocore::IAudioMixer
-            iOS/
-                videocore::iOS::GLESVideoMixer : videocore::IVideoMixer
-            OSX/
-                videocore::OSX::GLVideoMixer : videocore::IVideoMixer
+mixers/
+videocore::IMixer
+videocore::IAudioMixer : videocore::IMixer
+videocore::IVideoMixer : videocore::IMixer
+videocore::AudioMixer : videocore::IAudioMixer
+iOS/
+videocore::iOS::GLESVideoMixer : videocore::IVideoMixer
+OSX/
+videocore::OSX::GLVideoMixer : videocore::IVideoMixer
 
-    rtmp/
-        videocore::RTMPSession : videocore::IOutput
+rtmp/
+videocore::RTMPSession : videocore::IOutput
 
-    stream/
-        videocore::IStreamSession
-        Apple/
-            videocore::Apple::StreamSession : videocore::IStreamSession
+stream/
+videocore::IStreamSession
+Apple/
+videocore::Apple::StreamSession : videocore::IStreamSession
 
 ```
-##Projects Using VideoCore
-
-* MobCrush (http://www.mobcrush.com)
-* Cine.io (http://www.cine.io)
-
-_If you would like to be included in this list, either make a pull request or contact jamesghurley@gmail.com_
 
 ##Version History
 
+* 0.1.9
+	* Bugfixes, memory leak fixes
+	* Introduces the ability to choose whether to use interface orientation or device orientation for Camera orientation.
+* 0.1.8
+    * Introduces VideoToolbox encoding for iOS 8+ and OS X 10.9+
+    * Adds -lc++ for compatibility with Xcode 6
+* 0.1.7 
+    * Add a simplified iOS API for the common case of streaming camera/microphone
+    * Deprecate camera aspect ratio and position
+    * Add a matrix transform for Position
+    * Add a matrix transform for Aspect Ratio
+    * Bugfixes
 * 0.1.6
 	* Use device orientation for CameraSource rather than interface orientation
 * 0.1.5 
